@@ -1,0 +1,12 @@
+# Python 3.11 - 3.13
+numpy>=1.26
+pandas>=2.2
+scikit-learn==1.9.1     # must match the version used to save the .joblib models
+matplotlib>=3.8
+joblib>=1.3
+tensorflow>=2.16
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9
+jupyter>=1.0
+pytest>=8.0
