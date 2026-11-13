@@ -122,8 +122,8 @@ Data: A. Saxena and K. Goebel (2008), "Turbofan Engine Degradation Simulation Da
 Course project for *Industrial AI Applications*, Faculty of Information Technology, HUFLIT (Ho Chi Minh City University of Foreign Languages and Information Technology), 2026-2027. Supervisor: Huynh Thanh Loc, M.Sc.
 
 - Phung Thi Hoang Duyen ([@duyenphung206-sudo](https://github.com/duyenphung206-sudo))
-- Member 2 (name, GitHub)
-- Member 3 (name, GitHub)
+- Lê Đức Tâm ([@Bambizled](https://github.com/Bambizled))
+- Nguyễn Lê Yến Trinh ([@nlyen-trinh] (https://github.com/nlyen-trinh))
 
 ## License
 
