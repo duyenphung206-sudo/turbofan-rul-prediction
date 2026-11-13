@@ -123,7 +123,7 @@ Course project for *Industrial AI Applications*, Faculty of Information Technolo
 
 - Phung Thi Hoang Duyen ([@duyenphung206-sudo](https://github.com/duyenphung206-sudo))
 - Lê Đức Tâm ([@Bambizled](https://github.com/Bambizled))
-- Nguyễn Lê Yến Trinh ([@nlyen-trinh] (https://github.com/nlyen-trinh))
+- Nguyễn Lê Yến Trinh ([@nlyen-trinh](https://github.com/nlyen-trinh))
 
 ## License
 
