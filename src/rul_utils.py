@@ -1,17 +1,15 @@
 """
 rul_utils.py - Cac ham dung chung cho toan bo do an (notebook + app).
 
-Y tuong: moi buoc xu ly du lieu chi viet MOT lan o day, de notebook huan luyen
-va app trien khai luon xu ly du lieu giong het nhau (tranh lech train / deploy).
+Y tuong: moi buoc xu ly du lieu chi viet mot lan o day, de notebook huan luyen
+va app trien khai xu ly du lieu giong nhau (tranh lech giua train va deploy).
 """
 import json
 
 import numpy as np
 import pandas as pd
 
-# ---------------------------------------------------------------------------
-# 1. Cau truc du lieu C-MAPSS (26 cot, khong co dong tieu de)
-# ---------------------------------------------------------------------------
+# Cau truc du lieu C-MAPSS (26 cot, khong co dong tieu de)
 INDEX_COLS = ["unit", "cycle"]                        # so may, chu ky van hanh
 SETTING_COLS = ["setting_1", "setting_2", "setting_3"]  # 3 thong so van hanh
 SENSOR_COLS = [f"s_{i}" for i in range(1, 22)]        # 21 cam bien
@@ -42,20 +40,16 @@ SENSOR_INFO = {
     "s_21": ("W32", "Lưu lượng khí làm mát LPT", "lbm/s"),
 }
 
-# ---------------------------------------------------------------------------
-# 2. Cac hang so cua bai toan
-# ---------------------------------------------------------------------------
+# Cac hang so cua bai toan
 RUL_CAP = 125        # gioi han tren cua nhan RUL (piecewise-linear, Heimes 2008)
 ROLL_WINDOW = 30     # cua so truot (so chu ky) de lam min nhieu cam bien
 SEQ_LEN = 30         # do dai chuoi dau vao cho LSTM
-ALERT_CRITICAL = 30  # RUL <= 30 chu ky  -> NGUY CAP
-ALERT_WARNING = 60   # RUL <= 60 chu ky  -> CANH BAO
+ALERT_CRITICAL = 30  # RUL <= 30 chu ky: nguy cap
+ALERT_WARNING = 60   # RUL <= 60 chu ky: canh bao
 RANDOM_STATE = 42
 
 
-# ---------------------------------------------------------------------------
-# 3. Doc du lieu
-# ---------------------------------------------------------------------------
+# Doc du lieu
 def load_cmapss(path):
     """Doc 1 file train_FDxxx.txt / test_FDxxx.txt thanh DataFrame 26 cot."""
     df = pd.read_csv(path, sep=r"\s+", header=None, names=ALL_COLS)
@@ -69,9 +63,7 @@ def load_rul(path):
     return rul[["unit", "RUL"]]
 
 
-# ---------------------------------------------------------------------------
-# 4. Tao nhan RUL
-# ---------------------------------------------------------------------------
+# Tao nhan RUL
 def add_train_rul(df, cap=RUL_CAP):
     """Tap train chay den khi hong -> RUL = chu ky cuoi - chu ky hien tai."""
     df = df.copy()
@@ -90,15 +82,13 @@ def add_test_rul(df, rul_end, cap=RUL_CAP):
     return df.drop(columns="RUL_end")
 
 
-# ---------------------------------------------------------------------------
-# 5. Chuan bi dac trung (dung chung cho train / test / app)
-# ---------------------------------------------------------------------------
+# Chuan bi dac trung (dung chung cho train / test / app)
 def prepare_features(df, sensors, scaler, window=ROLL_WINDOW):
     """
     Bien du lieu tho thanh bang dac trung cho mo hinh.
 
     Cac buoc (giong het notebook 02):
-      1. Missing value : dien theo gia tri gan nhat TRUOC do cua cung dong co
+      1. Missing value : dien theo gia tri gan nhat truoc do cua cung dong co
                          (forward-fill), neu van thieu thi dien nguoc (back-fill).
       2. Scaling       : MinMaxScaler da fit tren tap train -> ve khoang [0, 1].
       3. Feature eng.  : trung binh truot (mean) va do lech chuan truot (std)
@@ -109,7 +99,7 @@ def prepare_features(df, sensors, scaler, window=ROLL_WINDOW):
     df = df.sort_values(INDEX_COLS).reset_index(drop=True)
     out = df[INDEX_COLS].copy()
 
-    # 1. Missing value: chi dung thong tin QUA KHU cua chinh dong co do
+    # 1. Missing value: chi dung thong tin qua khu cua chinh dong co do
     x = df.groupby("unit")[sensors].ffill()
     x = x.fillna(df.groupby("unit")[sensors].bfill())
 
@@ -155,13 +145,11 @@ def make_sequences(df, sensors, seq_len=SEQ_LEN, last_only=False):
     return np.array(X, dtype="float32"), np.array(y, dtype="float32"), np.array(units)
 
 
-# ---------------------------------------------------------------------------
-# 6. Chi so danh gia
-# ---------------------------------------------------------------------------
+# Chi so danh gia
 def nasa_score(y_true, y_pred):
     """
-    Ham diem cua cuoc thi PHM08 (Saxena et al., 2008). Cang NHO cang tot.
-    Du doan MUON (d > 0, tuc bao con nhieu hon thuc te) bi phat nang hon du doan SOM,
+    Ham diem cua cuoc thi PHM08 (Saxena et al., 2008). Cang nho cang tot.
+    Du doan muon (d > 0, tuc bao con nhieu hon thuc te) bi phat nang hon du doan som,
     vi bao muon co the dan toi hong may truoc khi kip bao tri.
     """
     d = np.asarray(y_pred) - np.asarray(y_true)
@@ -183,9 +171,7 @@ def regression_metrics(y_true, y_pred):
     }
 
 
-# ---------------------------------------------------------------------------
-# 7. Ho tro ra quyet dinh (Decision Support)
-# ---------------------------------------------------------------------------
+# Ho tro ra quyet dinh (Decision Support)
 def health_status(rul, critical=ALERT_CRITICAL, warning=ALERT_WARNING):
     """Doi RUL du doan thanh trang thai suc khoe."""
     if pd.isna(rul):
@@ -205,9 +191,7 @@ RECOMMENDED_ACTION = {
 }
 
 
-# ---------------------------------------------------------------------------
-# 8. Doc / ghi cau hinh
-# ---------------------------------------------------------------------------
+# Doc / ghi cau hinh
 def save_json(obj, path):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
@@ -218,9 +202,7 @@ def load_json(path):
         return json.load(f)
 
 
-# ---------------------------------------------------------------------------
-# 9. Du doan RUL cho MOI chu ky cua moi dong co (dung trong danh gia + app)
-# ---------------------------------------------------------------------------
+# Du doan RUL cho moi chu ky cua moi dong co (dung trong danh gia + app)
 def predict_tabular(model, feat_df, features, cap=RUL_CAP):
     """Linear Regression / Random Forest: moi dong (chu ky) la 1 mau."""
     pred = model.predict(feat_df[features])
@@ -245,9 +227,7 @@ def predict_lstm(model, feat_df, sensors, seq_len=SEQ_LEN, cap=RUL_CAP):
     return pred
 
 
-# ---------------------------------------------------------------------------
-# 10. Bieu do: dung chung 1 bo mau cho toan bo do an
-# ---------------------------------------------------------------------------
+# Bieu do: dung chung mot bo mau cho toan bo do an
 MODEL_COLORS = {
     "Baseline (mean)": "#8a8a85",
     "Linear Regression": "#2a78d6",
@@ -281,21 +261,3 @@ def save_fig(fig, name, folder="reports/figures"):
     path = os.path.join(folder, name)
     fig.savefig(path)
     print("Da luu hinh:", path)
-
-
-# ---------------------------------------------------------------------------
-# 11. Ho tro Google Colab: nen ket qua de tai ve may
-# ---------------------------------------------------------------------------
-def zip_outputs(zip_name, paths):
-    """Nen cac thu muc / file ket qua thanh 1 file .zip (giu nguyen cau truc thu muc)."""
-    import os
-    import zipfile
-    with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED) as z:
-        for p in paths:
-            if os.path.isfile(p):
-                z.write(p)
-            for root, _, files in os.walk(p):
-                for f in files:
-                    z.write(os.path.join(root, f))
-    print("Da nen ket qua vao:", zip_name)
-    return zip_name
