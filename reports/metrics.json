@@ -1,0 +1,227 @@
+{
+  "final_model": "LSTM",
+  "alert_threshold": 30,
+  "model_level_test": {
+    "Baseline (mean)": {
+      "MAE": 34.83,
+      "RMSE": 41.9802102254234,
+      "R2": -0.09743677518272431,
+      "NASA_score": 33780.970632786906
+    },
+    "Linear Regression": {
+      "MAE": 14.07319908137648,
+      "RMSE": 17.494329125420677,
+      "R2": 0.8094166850325184,
+      "NASA_score": 625.5739371002936
+    },
+    "Random Forest": {
+      "MAE": 12.403730196543377,
+      "RMSE": 16.928704467922316,
+      "R2": 0.8215412946820002,
+      "NASA_score": 762.2439481304463
+    },
+    "LSTM": {
+      "MAE": 10.07067666053772,
+      "RMSE": 13.8363559340316,
+      "R2": 0.8807842206575502,
+      "NASA_score": 373.79294659931094
+    }
+  },
+  "rmse_test_uncapped_labels": {
+    "Linear Regression": 18.784526569503672,
+    "Random Forest": 18.132705208615207,
+    "LSTM": 15.213674524465985
+  },
+  "mae_by_health_stage_test": {
+    "Linear Regression": {
+      "RUL 0-30 (nguy cap)": 17.871491249386548,
+      "RUL 31-60 (canh bao)": 25.039122627354445,
+      "RUL 61-125 (khoe)": 14.348634406692998
+    },
+    "Random Forest": {
+      "RUL 0-30 (nguy cap)": 8.379404313013193,
+      "RUL 31-60 (canh bao)": 21.3755564670099,
+      "RUL 61-125 (khoe)": 13.740079997493792
+    },
+    "LSTM": {
+      "RUL 0-30 (nguy cap)": 4.028408991285117,
+      "RUL 31-60 (canh bao)": 10.157107872059692,
+      "RUL 61-125 (khoe)": 10.783516665344102
+    }
+  },
+  "typical_error_final_model": {
+    "CRITICAL": 4.028408991285117,
+    "WARNING": 10.157107872059692,
+    "HEALTHY": 10.783516665344102
+  },
+  "system_alert_test": {
+    "Linear Regression": {
+      "TP": 12,
+      "FP": 0,
+      "FN": 13,
+      "TN": 75,
+      "Precision": 1.0,
+      "Recall": 0.48,
+      "F1": 0.6486486486486487,
+      "False_alarm_rate": 0.0,
+      "Miss_rate": 0.52
+    },
+    "Random Forest": {
+      "TP": 18,
+      "FP": 1,
+      "FN": 7,
+      "TN": 74,
+      "Precision": 0.9473684210526315,
+      "Recall": 0.72,
+      "F1": 0.8181818181818181,
+      "False_alarm_rate": 0.013333333333333334,
+      "Miss_rate": 0.28
+    },
+    "LSTM": {
+      "TP": 22,
+      "FP": 1,
+      "FN": 3,
+      "TN": 74,
+      "Precision": 0.9565217391304348,
+      "Recall": 0.88,
+      "F1": 0.9166666666666666,
+      "False_alarm_rate": 0.013333333333333334,
+      "Miss_rate": 0.12
+    }
+  },
+  "system_cost": {
+    "Linear Regression": {
+      "latency_ms": 0.5348786000001837,
+      "train_time_s": 0.03332853317260742,
+      "n_parameters": 43,
+      "model_size_mb": 0.001927
+    },
+    "Random Forest": {
+      "latency_ms": 26.266537919999564,
+      "train_time_s": 10.711424350738525,
+      "n_parameters": 95432,
+      "model_size_mb": 2.228315
+    },
+    "LSTM": {
+      "latency_ms": 52.05112509999992,
+      "train_time_s": 70.66713070869446,
+      "n_parameters": 22337,
+      "model_size_mb": 0.299438
+    }
+  },
+  "robustness_rmse": {
+    "Nhieu 0%": {
+      "Linear Regression": 17.494398320817623,
+      "Random Forest": 16.925763990185786,
+      "LSTM": 13.836363808484696
+    },
+    "Nhieu 2%": {
+      "Linear Regression": 17.41124313780299,
+      "Random Forest": 17.950175416258794,
+      "LSTM": 14.139718528056296
+    },
+    "Nhieu 5%": {
+      "Linear Regression": 22.93228419401181,
+      "Random Forest": 33.2265409473788,
+      "LSTM": 15.626807382902006
+    },
+    "Nhieu 10%": {
+      "Linear Regression": 44.5532261177194,
+      "Random Forest": 39.89168586723021,
+      "LSTM": 16.88740642048513
+    },
+    "Mat 10% du lieu": {
+      "Linear Regression": 17.28820590380764,
+      "Random Forest": 17.994480113904405,
+      "LSTM": 14.86534345091119
+    },
+    "Mat 30% du lieu": {
+      "Linear Regression": 18.436520884250807,
+      "Random Forest": 19.043323506537984,
+      "LSTM": 15.48635544578793
+    },
+    "FD002 (6 dieu kien van hanh)": {
+      "Linear Regression": 84.19725568931952,
+      "Random Forest": 55.519459090007324,
+      "LSTM": 63.07615038302613
+    }
+  },
+  "out_of_range_share": {
+    "FD001_test": 7.635919364691509e-05,
+    "FD002_test": 0.7929220760117174
+  },
+  "maintenance_policy_simulation": {
+    "Reactive": {
+      "Su_co_ngoai_ke_hoach": 20,
+      "Bao_tri_co_ke_hoach": 0,
+      "Tuoi_tho_lang_phi_TB": 0.0,
+      "Khoang_an_toan_nho_nhat": 0.0,
+      "Ti_le_su_dung_tuoi_tho_%": 100.0,
+      "Chi_phi_tren_1000_chu_ky": 24.570024570024568
+    },
+    "Preventive (T=128)": {
+      "Su_co_ngoai_ke_hoach": 0,
+      "Bao_tri_co_ke_hoach": 20,
+      "Tuoi_tho_lang_phi_TB": 75.5,
+      "Khoang_an_toan_nho_nhat": 7.0,
+      "Ti_le_su_dung_tuoi_tho_%": 62.8992628992629,
+      "Chi_phi_tren_1000_chu_ky": 7.8125
+    },
+    "Predictive - Linear Regression": {
+      "Su_co_ngoai_ke_hoach": 0,
+      "Bao_tri_co_ke_hoach": 20,
+      "Tuoi_tho_lang_phi_TB": 23.0,
+      "Khoang_an_toan_nho_nhat": 8.0,
+      "Ti_le_su_dung_tuoi_tho_%": 88.6977886977887,
+      "Chi_phi_tren_1000_chu_ky": 5.54016620498615
+    },
+    "Predictive - Random Forest": {
+      "Su_co_ngoai_ke_hoach": 0,
+      "Bao_tri_co_ke_hoach": 20,
+      "Tuoi_tho_lang_phi_TB": 32.65,
+      "Khoang_an_toan_nho_nhat": 18.0,
+      "Ti_le_su_dung_tuoi_tho_%": 83.95577395577396,
+      "Chi_phi_tren_1000_chu_ky": 5.8530875036581795
+    },
+    "Predictive - LSTM": {
+      "Su_co_ngoai_ke_hoach": 0,
+      "Bao_tri_co_ke_hoach": 20,
+      "Tuoi_tho_lang_phi_TB": 29.3,
+      "Khoang_an_toan_nho_nhat": 22.0,
+      "Ti_le_su_dung_tuoi_tho_%": 85.6019656019656,
+      "Chi_phi_tren_1000_chu_ky": 5.7405281285878305
+    }
+  },
+  "policy_assumptions": {
+    "cost_planned": 1.0,
+    "cost_unplanned": 5.0,
+    "preventive_interval_T": 128,
+    "n_engines": 20
+  },
+  "acceptance": {
+    "Linear Regression": {
+      "RMSE <= 20 va tot hon baseline": true,
+      "Recall canh bao >= 80%": false,
+      "False alarm <= 10%": true,
+      "Latency < 1 giay": true,
+      "0 su co ngoai ke hoach (mo phong)": true,
+      "Chi phi thap hon preventive": true
+    },
+    "Random Forest": {
+      "RMSE <= 20 va tot hon baseline": true,
+      "Recall canh bao >= 80%": false,
+      "False alarm <= 10%": true,
+      "Latency < 1 giay": true,
+      "0 su co ngoai ke hoach (mo phong)": true,
+      "Chi phi thap hon preventive": true
+    },
+    "LSTM": {
+      "RMSE <= 20 va tot hon baseline": true,
+      "Recall canh bao >= 80%": true,
+      "False alarm <= 10%": true,
+      "Latency < 1 giay": true,
+      "0 su co ngoai ke hoach (mo phong)": true,
+      "Chi phi thap hon preventive": true
+    }
+  }
+}
