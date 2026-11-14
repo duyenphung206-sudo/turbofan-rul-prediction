@@ -1,6 +1,6 @@
 # Turbofan Engine RUL Prediction
 
-Predicting the Remaining Useful Life (RUL) of turbofan engines from sensor data, and turning the prediction into a maintenance decision. Built on the NASA C-MAPSS FD001 benchmark as an end-to-end Industrial AI solution: problem definition, data analysis, three compared methods, three-level evaluation, a decision-support dashboard, and post-deployment monitoring.
+Predicting the Remaining Useful Life (RUL) of turbofan engines from sensor data, and turning the prediction into a maintenance decision. Built on the NASA C-MAPSS FD001 benchmark as an end-to-end Industrial AI solution: problem definition, data analysis, three compared methods, three-level evaluation, a decision-support web app, and post-deployment monitoring.
 
 ![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -13,13 +13,13 @@ Final evaluation on the 100 NASA test engines (RUL capped at 125 cycles, the usu
 
 | Model | RMSE | MAE | NASA score | Alert recall | False alarms | Latency (CPU) | RMSE with 5% sensor noise |
 |---|---|---|---|---|---|---|---|
-| Linear Regression | 17.49 | 14.07 | 626 | 48% | 0.0% | 1 ms | 22.9 |
-| Random Forest | 16.93 | 12.40 | 762 | 72% | 1.3% | 25 ms | 33.2 |
-| **LSTM** | **13.84** | 10.07 | 374 | 88% | 1.3% | 64 ms | 15.6 |
+| Linear Regression | 17.49 | 14.07 | 626 | 48% | 0.0% | < 1 ms | 22.9 |
+| Random Forest | 16.93 | 12.40 | 762 | 72% | 1.3% | 26 ms | 33.2 |
+| **LSTM** | **13.84** | 10.07 | 374 | 88% | 1.3% | 52 ms | 15.6 |
 
 - **LSTM is the only model that meets every acceptance criterion** defined before evaluation, so it is the deployed model. Random Forest is kept as a fallback.
 - The alert "RUL ≤ 30 cycles" catches 22 of 25 engines that really need maintenance, with 1 false alarm.
-- None of the three models transfers to other operating conditions (RMSE > 55 on FD002). The dashboard therefore checks every input for out-of-range sensor values before a prediction is trusted.
+- None of the three models transfers to other operating conditions (RMSE > 55 on FD002). The web app therefore checks every uploaded file for out-of-range sensor values and withholds predictions when more than 5% of readings fall outside the training range.
 
 Maintenance policy simulation on 20 held-out run-to-failure engines (cost units are illustrative assumptions: planned = 1, unplanned failure = 5):
 
@@ -43,20 +43,22 @@ The project follows the eight-step Industrial AI development lifecycle. Each ste
 | 4. Method Selection | Baseline regression vs. Random Forest vs. LSTM, chosen from problem, data and constraints | [`notebooks/03`](notebooks/03_method_selection_and_modeling.ipynb) |
 | 5. Model Development | Training, validation-based tuning, early stopping | [`notebooks/03`](notebooks/03_method_selection_and_modeling.ipynb) |
 | 6. Evaluation | Model level, system level, industrial level, acceptance decision | [`notebooks/04`](notebooks/04_evaluation.ipynb) |
-| 7. Deployment | Local dashboard: Data → AI → Decision, with human confirmation | [`app/app.py`](app/app.py) |
-| 8. Monitoring and Improvement | Data-drift check, performance check, engineer feedback log | [`app/app.py`](app/app.py) (Monitoring page) |
+| 7. Deployment | Local web app: Data → AI → Decision, with human confirmation | [`app/`](app/) (FastAPI server + HTML/JS) |
+| 8. Monitoring and Improvement | Data-drift check, performance check, engineer feedback log, retraining trigger | [`app/`](app/) (Model page) |
 
 ## Architecture
 
 ![Architecture](docs/architecture.png)
 
-## Dashboard
+## Web app
 
-| Engine detail: status, evidence, recommended action | Out-of-distribution upload is flagged |
+| Engine detail: status, evidence, recommended action | Out-of-distribution upload is blocked |
 |---|---|
 | ![Engine detail](docs/screenshots/02_engine_detail.png) | ![Drift warning](docs/screenshots/03_upload_drift_warning.png) |
 
-The dashboard ranks engines by urgency, shows which sensors deviate from the healthy state, recommends an action, and records the maintenance engineer's decision. The AI recommends; a person decides.
+![Model monitoring](docs/screenshots/04_model_monitoring.png)
+
+Four pages: **Overview** ranks the fleet by urgency; **Engine** shows the RUL trend, the deviating sensors on an engine schematic, the recommended action, and records the maintenance engineer's decision; **New data** checks an uploaded sensor file before predicting; **Model** monitors four rules (input drift, RMSE, alert recall, engineer rejections) and shows the acceptance results. The AI recommends; a person decides.
 
 ## Quick start
 
@@ -66,16 +68,18 @@ cd turbofan-rul-prediction
 python -m venv .venv
 .venv\Scripts\activate          # Windows  (macOS/Linux: source .venv/bin/activate)
 pip install -r requirements.txt
-streamlit run app/app.py
+python app/server.py            # opens http://127.0.0.1:8000
 ```
 
-The trained models and prepared data are included, so the dashboard runs without retraining. To reproduce everything from the raw data, run the notebooks in order (01 → 04), locally or in Google Colab. Run the unit tests with `python -m pytest -q`.
+The trained models and prepared data are included, so the web app runs without retraining. To reproduce everything from the raw data, run the notebooks in order (01 → 04), locally or in Google Colab. Run the unit tests with `python -m pytest -q`.
 
 ## Repository structure
 
 ```
 turbofan-rul-prediction/
-├── app/app.py              Streamlit dashboard (deployment + monitoring)
+├── app/
+│   ├── server.py           FastAPI server: prediction, upload checks, monitoring API
+│   └── static/             Web interface (HTML, CSS, JavaScript, bundled fonts)
 ├── data/
 │   ├── raw/                NASA C-MAPSS files (FD001, FD002 test)
 │   ├── processed/          Output of notebook 02
@@ -89,7 +93,7 @@ turbofan-rul-prediction/
 └── tests/                  Unit tests for the core functions
 ```
 
-`src/rul_utils.py` is the single implementation of the feature pipeline. The notebooks and the dashboard both import it, so training and serving cannot drift apart.
+`src/rul_utils.py` is the single implementation of the feature pipeline. The notebooks and the web app both import it, so training and serving cannot drift apart.
 
 ## Method summary
 
@@ -103,8 +107,9 @@ turbofan-rul-prediction/
 ## Limitations
 
 - C-MAPSS is simulated data. Results do not transfer to a real engine fleet without retraining and validation.
-- The models are valid for one operating condition and one fault mode (FD001). Other conditions are detected and flagged, not handled.
-- The LSTM needs 30 cycles of history before its first prediction and is harder to explain than the tabular models. The dashboard compensates with a sensor-deviation view.
+- The models are valid for one operating condition and one fault mode (FD001). Other conditions are detected and blocked, not handled.
+- Retraining is not automated. When a monitoring rule fails, notebooks 02 to 04 are re-run on new labelled data.
+- The LSTM needs 30 cycles of history before its first prediction and is harder to explain than the tabular models. The web app compensates with a sensor-deviation view.
 - The maintenance cost figures come from a simulation with assumed cost ratios on 20 engines. They show direction, not a financial forecast.
 
 ## Data and references
@@ -119,9 +124,9 @@ Data: A. Saxena and K. Goebel (2008), "Turbofan Engine Degradation Simulation Da
 
 ## Team
 
-Course project for *Industrial AI Applications*, Faculty of Information Technology, HUFLIT (Ho Chi Minh City University of Foreign Languages and Information Technology), 2026-2027. Supervisor: Huynh Thanh Loc, M.Sc.
+Course project for *Industrial AI Applications*, Faculty of Information Technology, HUFLIT (Ho Chi Minh City University of Foreign Languages and Information Technology), 2026-2027. Supervisor: Nguyễn Thành Lộc, M.Sc.
 
-- Phung Thi Hoang Duyen ([@duyenphung206-sudo](https://github.com/duyenphung206-sudo))
+- Phùng Thị Hoàng Duyên ([@duyenphung206-sudo](https://github.com/duyenphung206-sudo))
 - Lê Đức Tâm ([@Bambizled](https://github.com/Bambizled))
 - Nguyễn Lê Yến Trinh ([@nlyen-trinh](https://github.com/nlyen-trinh))
 

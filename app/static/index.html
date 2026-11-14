@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:,">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engine Health</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="utility">
+  <div class="utility-in">
+    <span class="u-left">Đồ án Ứng dụng AI trong công nghiệp, HUFLIT</span>
+    <div class="meta" id="meta"></div>
+    <a class="u-link" href="https://github.com/duyenphung206-sudo/turbofan-rul-prediction" target="_blank" rel="noopener">Mã nguồn trên GitHub</a>
+  </div>
+</div>
+<header class="topbar">
+  <a class="brand" href="#/" aria-label="Engine Health, trang Tổng quan">
+    <span class="brand-name">Engine<span>Health</span></span>
+    <span class="brand-tag">Dự đoán tuổi thọ còn lại của động cơ</span>
+  </a>
+  <nav class="nav" aria-label="Điều hướng chính">
+    <a href="#/" data-nav="overview">Tổng quan</a>
+    <a href="#/engine" data-nav="engine">Động cơ</a>
+    <a href="#/upload" data-nav="upload">Dữ liệu mới</a>
+    <a href="#/model" data-nav="model">Mô hình</a>
+  </nav>
+  <div class="hd-status" id="hd-status" aria-label="Tình trạng đội máy"></div>
+</header>
+<main id="view" tabindex="-1"></main>
+<footer class="site-foot">
+  <div class="stripe" id="foot-stripe" aria-hidden="true"></div>
+  <div class="foot-in">
+    <div class="foot-brand">
+      <div class="foot-mark">Engine<span>Health</span></div>
+      <p>Hệ thống hỗ trợ quyết định bảo trì, dựa trên dự đoán tuổi thọ còn lại (RUL) của động cơ turbofan.</p>
+      <p class="foot-hi">Biết sớm, bảo trì kịp lúc.</p>
+    </div>
+    <nav class="foot-col" aria-label="Chức năng">
+      <h2>Chức năng</h2>
+      <a href="#/">Tổng quan đội máy</a>
+      <a href="#/engine">Chi tiết động cơ</a>
+      <a href="#/upload">Dữ liệu mới</a>
+      <a href="#/model">Mô hình và giám sát</a>
+    </nav>
+    <div class="foot-col">
+      <h2>Dữ liệu và mô hình</h2>
+      <p>Dữ liệu NASA C-MAPSS FD001, mô phỏng</p>
+      <p id="foot-model">Mô hình LSTM</p>
+      <p id="foot-rule"></p>
+      <a href="https://www.nasa.gov/intelligent-systems-division/discovery-and-systems-health/pcoe/pcoe-data-set-repository/" target="_blank" rel="noopener">Kho dữ liệu của NASA</a>
+    </div>
+    <div class="foot-col">
+      <h2>Đồ án</h2>
+      <p>Môn Ứng dụng AI trong công nghiệp</p>
+      <p>Khoa Công nghệ thông tin, HUFLIT</p>
+      <p>Giảng viên: Nguyễn Thành Lộc, M.Sc.</p>
+      <p>Năm học 2026-2027</p>
+    </div>
+    <div class="foot-col foot-people">
+      <h2>Nhóm thực hiện</h2>
+      <a href="https://github.com/duyenphung206-sudo" target="_blank" rel="noopener">Phùng Thị Hoàng Duyên</a>
+      <a href="https://github.com/Bambizled" target="_blank" rel="noopener">Lê Đức Tâm</a>
+      <a href="https://github.com/nlyen-trinh" target="_blank" rel="noopener">Nguyễn Lê Yến Trinh</a>
+      <a href="https://github.com/duyenphung206-sudo/turbofan-rul-prediction" target="_blank" rel="noopener">Mã nguồn trên GitHub</a>
+    </div>
+  </div>
+  <div class="foot-base">
+    <div class="foot-base-in">
+      <span>© 2026 Nhóm đồ án Engine Health, HUFLIT. Mã nguồn theo giấy phép MIT.</span>
+      <span>Dữ liệu mô phỏng, không phải dữ liệu vận hành thật. Phông chữ Barlow theo giấy phép SIL Open Font.</span>
+    </div>
+  </div>
+</footer>
+<div class="tip" id="tip" role="tooltip"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/app.js"></script>
+</body>
+</html>
