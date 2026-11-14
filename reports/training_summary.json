@@ -1,0 +1,52 @@
+{
+  "validation_metrics": {
+    "Baseline (mean)": {
+      "MAE": 36.929802663876686,
+      "RMSE": 41.72082538935907,
+      "R2": -0.00024774997701904056,
+      "NASA_score": 1285855.8101210925
+    },
+    "Linear Regression": {
+      "MAE": 14.145759631813998,
+      "RMSE": 18.177341865832393,
+      "R2": 0.8101272895824574,
+      "NASA_score": 21671.91320842864
+    },
+    "Random Forest": {
+      "MAE": 11.705677376549078,
+      "RMSE": 16.696820095867864,
+      "R2": 0.8397974830034654,
+      "NASA_score": 30897.40020736054
+    },
+    "LSTM": {
+      "MAE": 8.69925308227539,
+      "RMSE": 11.961260795593262,
+      "R2": 0.9179337916504297,
+      "NASA_score": 7668.35546875
+    }
+  },
+  "train_info": {
+    "Linear Regression": {
+      "train_time_s": 0.03332853317260742,
+      "n_parameters": 43,
+      "model_size_mb": 0.001927
+    },
+    "Random Forest": {
+      "train_time_s": 10.711424350738525,
+      "n_parameters": 95432,
+      "best_params": {
+        "n_estimators": 100,
+        "max_depth": 10,
+        "min_samples_leaf": 5
+      },
+      "model_size_mb": 2.228315
+    },
+    "LSTM": {
+      "train_time_s": 70.66713070869446,
+      "n_parameters": 22337,
+      "epochs_run": 35,
+      "model_size_mb": 0.299438
+    }
+  },
+  "mean_rul_train": 86.95881891190146
+}
