@@ -377,5 +377,217 @@
       "Chi_phi_ti_le_5": 5.7405281285878305,
       "Chi_phi_ti_le_10": 5.7405281285878305
     }
-  ]
+  ],
+  "reliability_lstm_test": {
+    "status_true_vs_shown": {
+      "CRITICAL": {
+        "CRITICAL": 22,
+        "WARNING": 3,
+        "HEALTHY": 0
+      },
+      "WARNING": {
+        "CRITICAL": 1,
+        "WARNING": 7,
+        "HEALTHY": 6
+      },
+      "HEALTHY": {
+        "CRITICAL": 0,
+        "WARNING": 2,
+        "HEALTHY": 59
+      }
+    },
+    "decision_cases": [
+      {
+        "loai": "Bo sot",
+        "unit": 18,
+        "so_chu_ky_quan_sat": 133,
+        "RUL": 28,
+        "LSTM": 32.561038970947266,
+        "sai_so": 4.561038970947266,
+        "trang_thai_that": "CRITICAL",
+        "trang_thai_hien_thi": "WARNING",
+        "thu_tu_uu_tien": 26
+      },
+      {
+        "loai": "Bo sot",
+        "unit": 37,
+        "so_chu_ky_quan_sat": 121,
+        "RUL": 21,
+        "LSTM": 30.508325576782227,
+        "sai_so": 9.508325576782227,
+        "trang_thai_that": "CRITICAL",
+        "trang_thai_hien_thi": "WARNING",
+        "thu_tu_uu_tien": 24
+      },
+      {
+        "loai": "Bo sot",
+        "unit": 40,
+        "so_chu_ky_quan_sat": 133,
+        "RUL": 28,
+        "LSTM": 32.654422760009766,
+        "sai_so": 4.654422760009766,
+        "trang_thai_that": "CRITICAL",
+        "trang_thai_hien_thi": "WARNING",
+        "thu_tu_uu_tien": 27
+      },
+      {
+        "loai": "Bao dong gia",
+        "unit": 91,
+        "so_chu_ky_quan_sat": 234,
+        "RUL": 38,
+        "LSTM": 24.66948127746582,
+        "sai_so": -13.33051872253418,
+        "trang_thai_that": "WARNING",
+        "trang_thai_hien_thi": "CRITICAL",
+        "thu_tu_uu_tien": 18
+      },
+      {
+        "loai": "Muon lon nhat",
+        "unit": 67,
+        "so_chu_ky_quan_sat": 71,
+        "RUL": 77,
+        "LSTM": 120.72138977050781,
+        "sai_so": 43.72138977050781,
+        "trang_thai_that": "HEALTHY",
+        "trang_thai_hien_thi": "HEALTHY",
+        "thu_tu_uu_tien": 95
+      },
+      {
+        "loai": "Muon lon nhat",
+        "unit": 79,
+        "so_chu_ky_quan_sat": 101,
+        "RUL": 63,
+        "LSTM": 104.49842071533203,
+        "sai_so": 41.49842071533203,
+        "trang_thai_that": "HEALTHY",
+        "trang_thai_hien_thi": "HEALTHY",
+        "thu_tu_uu_tien": 66
+      },
+      {
+        "loai": "Muon lon nhat",
+        "unit": 27,
+        "so_chu_ky_quan_sat": 140,
+        "RUL": 66,
+        "LSTM": 101.5682601928711,
+        "sai_so": 35.568260192871094,
+        "trang_thai_that": "HEALTHY",
+        "trang_thai_hien_thi": "HEALTHY",
+        "thu_tu_uu_tien": 59
+      }
+    ],
+    "by_history_length": [
+      {
+        "nhom_lich_su": "<= 100",
+        "so_dong_co": 30,
+        "MAE": 10.363331604003907,
+        "muon_hon_15": 5,
+        "RUL_that_TB": 110.2
+      },
+      {
+        "nhom_lich_su": "101-200",
+        "so_dong_co": 62,
+        "MAE": 9.68953034185594,
+        "muon_hon_15": 8,
+        "RUL_that_TB": 61.16129032258065
+      },
+      {
+        "nhom_lich_su": "> 200",
+        "so_dong_co": 8,
+        "MAE": 11.927104592323303,
+        "muon_hon_15": 0,
+        "RUL_that_TB": 43.375
+      }
+    ],
+    "lead_time_val": {
+      "RUL_that_khi_canh_bao": {
+        "mean": 61.35,
+        "50%": 58.5,
+        "min": 40.0,
+        "max": 108.0
+      },
+      "RUL_that_khi_nguy_cap": {
+        "mean": 29.3,
+        "50%": 29.0,
+        "min": 22.0,
+        "max": 43.0
+      },
+      "ti_le_giu_nguy_cap": {
+        "mean": 0.9703139143928619,
+        "50%": 1.0,
+        "min": 0.7631578947368421,
+        "max": 1.0
+      },
+      "so_lan_doi_trang_thai": {
+        "mean": 0.9,
+        "50%": 0.0,
+        "min": 0.0,
+        "max": 6.0
+      }
+    },
+    "calibration_ps30": {
+      "Ps30 -30%": {
+        "RMSE": 14.628012343926706,
+        "Recall": 0.68,
+        "Bao_dong_gia": 0.0,
+        "Ngoai_vung_ca_lo_%": 2.8651060301946067,
+        "Ngoai_vung_Ps30_%": 40.019853390348196
+      },
+      "Ps30 -20%": {
+        "RMSE": 14.066813198648502,
+        "Recall": 0.68,
+        "Bao_dong_gia": 0.0,
+        "Ngoai_vung_ca_lo_%": 0.8224976001396282,
+        "Ngoai_vung_Ps30_%": 11.423335369578497
+      },
+      "Ps30 -10%": {
+        "RMSE": 13.736980705832872,
+        "Recall": 0.84,
+        "Bao_dong_gia": 0.013333333333333334,
+        "Ngoai_vung_ca_lo_%": 0.06926869709398727,
+        "Ngoai_vung_Ps30_%": 0.8781307269395235
+      },
+      "Ps30 -5%": {
+        "RMSE": 13.737864054526293,
+        "Recall": 0.84,
+        "Bao_dong_gia": 0.013333333333333334,
+        "Ngoai_vung_ca_lo_%": 0.01963522122349245,
+        "Ngoai_vung_Ps30_%": 0.1832620647525962
+      },
+      "Ps30 +0%": {
+        "RMSE": 13.836363808484696,
+        "Recall": 0.88,
+        "Bao_dong_gia": 0.013333333333333334,
+        "Ngoai_vung_ca_lo_%": 0.007635919364691509,
+        "Ngoai_vung_Ps30_%": 0.015271838729383019
+      },
+      "Ps30 +5%": {
+        "RMSE": 14.003776002733938,
+        "Recall": 0.96,
+        "Bao_dong_gia": 0.013333333333333334,
+        "Ngoai_vung_ca_lo_%": 0.006545073741164151,
+        "Ngoai_vung_Ps30_%": 0.0
+      },
+      "Ps30 +10%": {
+        "RMSE": 14.25332044257814,
+        "Recall": 0.96,
+        "Bao_dong_gia": 0.013333333333333334,
+        "Ngoai_vung_ca_lo_%": 0.006545073741164151,
+        "Ngoai_vung_Ps30_%": 0.0
+      },
+      "Ps30 +20%": {
+        "RMSE": 15.059505769476104,
+        "Recall": 1.0,
+        "Bao_dong_gia": 0.013333333333333334,
+        "Ngoai_vung_ca_lo_%": 0.008181342176455188,
+        "Ngoai_vung_Ps30_%": 0.022907758094074526
+      },
+      "Ps30 +30%": {
+        "RMSE": 16.147524630535802,
+        "Recall": 1.0,
+        "Bao_dong_gia": 0.02666666666666667,
+        "Ngoai_vung_ca_lo_%": 0.039815865258748584,
+        "Ngoai_vung_Ps30_%": 0.465791081246182
+      }
+    }
+  }
 }

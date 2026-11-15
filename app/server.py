@@ -74,7 +74,9 @@ for s in SENSORS:
 TRAIN_MIN = pd.Series(CONFIG["train_raw_min"])
 TRAIN_MAX = pd.Series(CONFIG["train_raw_max"])
 LAST_BATCH = {}                # ket qua kiem tra lo du lieu moi gan nhat, trang Mo hinh dung de giam sat
-TYPICAL_ERROR = {k: round(v, 1) for k, v in METRICS["typical_error_final_model"].items()}
+# Sai so dien hinh theo giai doan cua mo hinh dang chay (LSTM hoac Random Forest du phong)
+STAGE_KEYS = {"CRITICAL": "RUL 0-30 (nguy cap)", "WARNING": "RUL 31-60 (canh bao)", "HEALTHY": "RUL 61-125 (khoe)"}
+TYPICAL_ERROR = {k: round(METRICS["mae_by_health_stage_test"][MODEL_NAME][v], 1) for k, v in STAGE_KEYS.items()}
 SENSOR_META = {s: {"code": SENSOR_INFO[s][0], "name": SENSOR_INFO[s][1], "unit": SENSOR_INFO[s][2]} for s in SENSORS}
 
 
