@@ -29,6 +29,12 @@ Maintenance policy simulation on 20 held-out run-to-failure engines (cost units 
 | Preventive (T=128) | 0 | 63% | 7.8 |
 | Predictive - LSTM | 0 | 86% | 5.7 |
 
+Robustness checks (notebook 04):
+
+- **Retraining stability:** LSTM retrained with 5 other seeds gives test RMSE 13.66 ± 0.29 and alert recall 80–96%; every run still meets the acceptance criteria.
+- **Cost sensitivity:** across preventive intervals of 128–180 cycles and failure/planned cost ratios of 3–10, the cheapest preventive setting (7.37) is still about 22% more expensive than predictive maintenance with LSTM (5.74).
+- **Explainability:** permutation importance shows the LSTM uses all 14 sensors, led by Ps30 (HPC static pressure), consistent with the FD001 fault mode. Alert ROC-AUC is 0.995 (LSTM), 0.988 (Random Forest), 0.992 (Linear Regression).
+
 All figures are reproduced by the notebooks and stored in [`reports/metrics.json`](reports/metrics.json).
 
 ## Industrial AI lifecycle
