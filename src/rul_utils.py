@@ -254,6 +254,17 @@ def set_plot_style():
     })
 
 
+def add_panel_labels(fig, axes, labels, gap=0.012):
+    """Ghi chu thich phu (a), (b), ... ngay duoi tung o hinh, thay cho tieu de trong hinh."""
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    inv = fig.transFigure.inverted()
+    for ax, label in zip(axes, labels):
+        box = ax.get_tightbbox(renderer).transformed(inv)
+        pos = ax.get_position()
+        fig.text((pos.x0 + pos.x1) / 2, box.y0 - gap, label, ha="center", va="top", fontsize=10.5, color=INK)
+
+
 def save_fig(fig, name, folder="reports/figures"):
     """Luu hinh vao reports/figures de chen vao bao cao."""
     import os
