@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Inter", sans-serif; color: #1f2a37; background: #fff; width: 1000px; padding: 14px 14px 12px; }
+  .layer { margin-bottom: 34px; position: relative; }
+  .lname { background: #1f2a37; color: #fff; border-radius: 8px 8px 0 0; padding: 7px 12px; font-weight: 700; font-size: 16px; }
+  .lname small { font-weight: 500; font-size: 14px; color: #c9d3e0; margin-left: 10px; }
+  .row { display: flex; gap: 10px; align-items: stretch; background: #f4f6f9; border: 1px solid #dfe4ea; border-top: 0; border-radius: 0 0 10px 10px; padding: 10px; position: relative; }
+  .box { flex: 1; border-radius: 8px; padding: 9px 10px; font-size: 14.5px; line-height: 1.33; background: #fff; border: 2.5px solid; }
+  .box b { display: block; font-size: 15.5px; margin-bottom: 4px; }
+  .box .tech { display: block; margin-top: 6px; font-size: 13.5px; color: #4b5563; }
+  .built { border-color: #1f9d55; } .built b { color: #146c3b; }
+  .sim { border-color: #d48806; } .sim b { color: #9a6200; }
+  .prop { border-color: #8a94a3; border-style: dashed; } .prop b { color: #4b5563; }
+  .arrow { position: absolute; left: 50%; bottom: -29px; transform: translateX(-50%); font-size: 14px; color: #374151; white-space: nowrap; }
+  .arrow::before { content: "▼"; color: #2a78d6; font-size: 17px; margin-right: 6px; }
+  .bottom { display: flex; gap: 10px; }
+  .vbar { flex: 1; border-radius: 10px; padding: 10px 12px; font-size: 14px; line-height: 1.36; }
+  .vbar h4 { font-size: 16px; margin-bottom: 6px; }
+  .vbar ul { padding-left: 18px; } .vbar li { margin-bottom: 4px; }
+  .mon { background: #eef5fd; border: 2.5px solid #2a78d6; }
+  .sec { background: #f6f2fb; border: 2.5px dashed #8e5bc4; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; font-size: 14.5px; margin-top: 12px; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .sw { width: 30px; height: 16px; border-radius: 4px; border: 2.5px solid; background: #fff; display: inline-block; }
+</style></head>
+<body>
+<div>
+  <div class="layer">
+    <div class="lname">1. Tài sản và nguồn dữ liệu<small>động cơ và hệ thống của đơn vị khai thác</small></div>
+    <div class="row">
+      <div class="box sim"><b>Đội động cơ turbofan</b>21 cảm biến và 3 thông số vận hành, ghi một bản ghi sau mỗi chu kỳ (chuyến bay)<span class="tech">Nguyên mẫu: dữ liệu NASA C-MAPSS FD001</span></div>
+      <div class="box prop"><b>Bộ ghi dữ liệu động cơ</b>Bộ điều khiển và ghi dữ liệu trên máy bay, xuất số liệu sau mỗi chuyến bay<span class="tech">Đề xuất: kết nối khi triển khai thật</span></div>
+      <div class="box prop"><b>Hệ thống quản lý bảo trì (CMMS)</b>Lịch sử bảo trì, lệnh công việc, phụ tùng; cung cấp RUL thật sau mỗi lần hỏng hoặc bảo trì</div>
+      <div class="arrow">số đo cảm biến theo động cơ và chu kỳ</div>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lname">2. Thu thập và truyền dữ liệu<small>biên (edge) và cổng nhận dữ liệu</small></div>
+    <div class="row">
+      <div class="box prop"><b>Cổng biên (edge gateway)</b>Đọc dữ liệu sau mỗi chu kỳ, gắn mã động cơ và thời gian, gửi lên nền tảng<span class="tech">Đề xuất: giao thức MQTT, máy chủ Eclipse Mosquitto</span></div>
+      <div class="box built"><b>API nhận lô dữ liệu</b>Nhận tệp .txt/.csv 26 cột theo định dạng C-MAPSS từ trang Dữ liệu mới<span class="tech">Đã xây dựng: FastAPI (Python)</span></div>
+      <div class="box built"><b>Kiểm tra dữ liệu đầu vào (3B)</b>Định dạng, ô trống, tính liên tục của chu kỳ, đủ 30 chu kỳ, tỉ lệ số đo ngoài vùng huấn luyện &gt; 5% thì chặn dự đoán<span class="tech">Đã xây dựng: app/server.py</span></div>
+      <div class="arrow">dữ liệu hợp lệ</div>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lname">3. Nền tảng dữ liệu<small>lưu trữ tập trung</small></div>
+    <div class="row">
+      <div class="box prop"><b>CSDL chuỗi thời gian</b>Số đo cảm biến theo động cơ và chu kỳ, phục vụ huấn luyện lại và tra cứu lịch sử<span class="tech">Đề xuất: PostgreSQL + TimescaleDB, cài trên máy chủ của đơn vị (mã nguồn mở)</span></div>
+      <div class="box prop"><b>CSDL quan hệ</b>Kết quả dự đoán, nhật ký quyết định của kỹ sư, người dùng và phân quyền<span class="tech">Đề xuất: PostgreSQL. Nguyên mẫu: tệp CSV nhật ký</span></div>
+      <div class="box prop"><b>Kho lưu trữ tệp</b>Tệp dữ liệu thô, mô hình, bộ chuẩn hóa, cấu hình đặc trưng theo từng phiên bản<span class="tech">Đề xuất: MinIO (tương thích S3). Nguyên mẫu: thư mục data/, models/</span></div>
+      <div class="arrow">dữ liệu cho huấn luyện và suy luận</div>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lname">4. Mô hình AI<small>huấn luyện và suy luận</small></div>
+    <div class="row">
+      <div class="box built"><b>Pipeline đặc trưng dùng chung</b>Điền thiếu, chuẩn hóa MinMax, đặc trưng trượt 30 chu kỳ (mô hình bảng) hoặc chuỗi 30 × 14 (LSTM)<span class="tech">Đã xây dựng: src/rul_utils.py</span></div>
+      <div class="box built"><b>Huấn luyện và nghiệm thu</b>Linear Regression, Random Forest, LSTM; đánh giá ba mức và đối chiếu tiêu chí chấp nhận<span class="tech">Đã xây dựng: notebook 02–04, scikit-learn, TensorFlow/Keras</span></div>
+      <div class="box prop"><b>Quản lý phiên bản mô hình</b>Lưu mô hình kèm bộ chuẩn hóa, số liệu nghiệm thu, người phê duyệt<span class="tech">Đề xuất: MLflow Model Registry. Nguyên mẫu: models/ + metrics.json</span></div>
+      <div class="box built"><b>Dịch vụ suy luận</b>Dự đoán RUL cho từng động cơ, quy ra trạng thái, nêu cảm biến lệch và sai số điển hình<span class="tech">Đã xây dựng: FastAPI, LSTM (dự phòng: Random Forest)</span></div>
+      <div class="arrow">RUL, trạng thái, bằng chứng</div>
+    </div>
+  </div>
+
+  <div class="layer" style="margin-bottom: 14px;">
+    <div class="lname">5. Hỗ trợ quyết định và hành động<small>người dùng và quy trình bảo trì</small></div>
+    <div class="row">
+      <div class="box built"><b>Dashboard web (4 trang)</b>Tổng quan đội máy, chi tiết động cơ, tải dữ liệu mới, giám sát mô hình<span class="tech">Đã xây dựng: HTML/CSS/JavaScript</span></div>
+      <div class="box built"><b>Quy tắc cảnh báo</b>RUL ≤ 30: Nguy cấp; RUL ≤ 60: Cảnh báo; danh sách ưu tiên theo RUL<span class="tech">Đã xây dựng</span></div>
+      <div class="box sim"><b>Kỹ sư bảo trì xác nhận</b>Đồng ý, Hoãn hoặc Bác bỏ (bắt buộc ghi lý do); lưu nhật ký<span class="tech">Chức năng đã xây dựng; người dùng là mô phỏng</span></div>
+      <div class="box prop"><b>Hành động công nghiệp</b>Tạo lệnh công việc trong CMMS, xếp lịch bảo trì, đặt phụ tùng<span class="tech">Đề xuất: tích hợp qua API của CMMS</span></div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="vbar mon"><h4>Giám sát và cải tiến</h4>
+      <ul>
+        <li><b>Đã xây dựng:</b> 4 quy tắc trên trang Mô hình: tỉ lệ số đo ngoài vùng ≤ 5%; RMSE ≤ 20 và Recall ≥ 80% khi đã biết RUL thật; tỉ lệ bác bỏ ≤ 30%.</li>
+        <li>Không đạt quy tắc: chuyển trạng thái "Cần xem xét huấn luyện lại".</li>
+        <li><b>Đề xuất:</b> quy tắc ngoài vùng cho từng cảm biến; tự động huấn luyện lại khi có dữ liệu có nhãn; giám sát hệ thống bằng Prometheus và Grafana.</li>
+      </ul>
+      <p class="loop" style="margin-top:6px">Vòng phản hồi: RUL thật từ CMMS và quyết định của kỹ sư quay lại tầng 3 để huấn luyện lại.</p>
+    </div>
+    <div class="vbar sec"><h4>Bảo mật và tin cậy</h4>
+      <ul>
+        <li>Đăng nhập, phân quyền theo vai trò (đề xuất: Keycloak).</li>
+        <li>Mã hóa đường truyền TLS giữa các tầng.</li>
+        <li>Nhật ký quyết định chỉ ghi thêm, không sửa được.</li>
+        <li>Mô hình chỉ được thay sau khi nghiệm thu lại đủ 6 tiêu chí.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i class="sw" style="border-color:#1f9d55"></i>Đã xây dựng và kiểm thử</span>
+    <span><i class="sw" style="border-color:#d48806"></i>Mô phỏng bằng dữ liệu công khai</span>
+    <span><i class="sw" style="border-color:#8a94a3;border-style:dashed"></i>Đề xuất cho triển khai thật</span>
+    <span><b style="color:#2a78d6">▼</b>&nbsp;Luồng dữ liệu chính</span>
+  </div>
+</div>
+</body></html>

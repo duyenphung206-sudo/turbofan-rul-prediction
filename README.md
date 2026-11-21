@@ -54,7 +54,9 @@ The project follows the eight-step Industrial AI development lifecycle. Each ste
 
 ## Architecture
 
-![Architecture](docs/architecture.png)
+![System architecture](docs/system_architecture.png)
+
+Layered architecture (assets → data acquisition → data platform → AI model → decision support), with monitoring and security as cross-cutting concerns. Green: built and tested; amber: simulated with public data; dashed: proposed for a real deployment. Source: [`docs/system_architecture.html`](docs/system_architecture.html).
 
 ## Web app
 
